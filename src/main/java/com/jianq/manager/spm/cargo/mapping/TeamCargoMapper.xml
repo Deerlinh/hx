@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianq.manager.spm.cargo.dao.TeamCargoMapper">
+    <resultMap id="BaseResultMap" type="com.jianq.manager.spm.cargo.entity.TeamCargo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cargoId" property="cargoId" jdbcType="INTEGER"/>
+        <result column="teamId" property="teamId" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, cargoId, teamId, creator, createTime
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_team_cargo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hx_team_cargo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.jianq.manager.spm.cargo.entity.TeamCargo">
+        insert into hx_team_cargo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cargoId != null">
+                cargoId,
+            </if>
+            <if test="teamId != null">
+                teamId,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="cargoId != null">
+                #{cargoId,jdbcType=INTEGER},
+            </if>
+            <if test="teamId != null">
+                #{teamId,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jianq.manager.spm.cargo.entity.TeamCargo">
+        update hx_team_cargo
+        <set>
+            <if test="cargoId != null">
+                cargoId = #{cargoId,jdbcType=INTEGER},
+            </if>
+            <if test="teamId != null">
+                teamId = #{teamId,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCargoId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_team_cargo
+        where cargoId = #{cargoId,jdbcType=INTEGER}
+        limit 1
+    </select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!-- 引入多环境配置文件 -->
+    <context:property-placeholder
+            location="classpath:properties/application-test.properties"
+            file-encoding="utf-8" />
+
+    <!-- 2：数据库连接池配置 -->
+    <bean id="hongxingDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.hongxing.url}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!-- c3p0连接池的私有属性 -->
+        <property name="maxPoolSize" value="10"></property>
+        <property name="minPoolSize" value="5"></property>
+        <!-- 关闭连接后不自动提交 -->
+        <property name="autoCommitOnClose" value="false"></property>
+        <!-- 获取连接时间 -->
+        <property name="checkoutTimeout" value="2000"></property>
+        <!-- 获取连接失败重试次数 -->
+        <property name="acquireRetryAttempts" value="2"></property>
+    </bean>
+</beans>

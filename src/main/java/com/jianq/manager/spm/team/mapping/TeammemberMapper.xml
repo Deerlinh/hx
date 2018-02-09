@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianq.manager.spm.team.dao.TeammemberMapper">
+    <resultMap id="BaseResultMap" type="com.jianq.manager.spm.team.entity.Teammember">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="roleId" property="roleId" jdbcType="INTEGER"/>
+        <result column="teamId" property="teamId" jdbcType="INTEGER"/>
+        <result column="robotType" property="robotType" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, userId, roleId, teamId, robotType, creator, createTime
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_teammember
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hx_teammember
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.jianq.manager.spm.team.entity.Teammember">
+        insert into hx_teammember
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                userId,
+            </if>
+            <if test="roleId != null">
+                roleId,
+            </if>
+            <if test="teamId != null">
+                teamId,
+            </if>
+            <if test="robotType != null">
+                robotType,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="teamId != null">
+                #{teamId,jdbcType=INTEGER},
+            </if>
+            <if test="robotType != null">
+                #{robotType,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jianq.manager.spm.team.entity.Teammember">
+        update hx_teammember
+        <set>
+            <if test="userId != null">
+                userId = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                roleId = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="teamId != null">
+                teamId = #{teamId,jdbcType=INTEGER},
+            </if>
+            <if test="robotType != null">
+                robotType = #{robotType,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_teammember
+        where roleId = #{roleId,jdbcType=INTEGER}
+        limit 1
+    </select>
+
+    <select id="getNextRoleTeammember" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_teammember
+        <![CDATA[ WHERE roleId > (SELECT roleId FROM hx_teammember WHERE userId = #{userId} and teamId= #{teamId}) and teamId= #{teamId}]]>
+        order by roleId
+        limit 1
+    </select>
+
+    <select id="selectByTeamIdAndUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_teammember
+        where teamId = #{teamId,jdbcType=INTEGER} and userId = #{userId,jdbcType=INTEGER}
+        limit 1
+    </select>
+
+    <select id="selectByTeamIdAndRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_teammember
+        where teamId = #{teamId,jdbcType=INTEGER} and roleId = #{roleId,jdbcType=INTEGER}
+    </select>
+</mapper>

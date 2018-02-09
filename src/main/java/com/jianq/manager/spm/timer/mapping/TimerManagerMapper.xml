@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianq.manager.spm.timer.dao.TimerManagerDao">
+	<resultMap id="BaseResultMap"
+		type="com.jianq.manager.spm.timer.entity.TimerManager">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="belongsSystem" property="belongsSystem"
+			jdbcType="VARCHAR" />
+		<result column="packagePath" property="packagePath" jdbcType="VARCHAR" />
+		<result column="cron" property="cron" jdbcType="VARCHAR" />
+		<result column="execStatus" property="execStatus" jdbcType="INTEGER" />
+		<result column="lastTime" property="lastTime" jdbcType="TIMESTAMP" />
+		<result column="lastResult" property="lastResult" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, belongsSystem, packagePath, cron, execStatus, lastTime,
+		lastResult, createTime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from spm_timer_manager
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from spm_timer_manager
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.jianq.manager.spm.timer.entity.TimerManager">
+		insert into spm_timer_manager (id, name, belongsSystem,
+		packagePath, cron, execStatus,
+		lastTime, lastResult, createTime
+		)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{belongsSystem,jdbcType=VARCHAR},
+		#{packagePath,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR}, #{execStatus,jdbcType=INTEGER},
+		#{lastTime,jdbcType=TIMESTAMP}, #{lastResult,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.jianq.manager.spm.timer.entity.TimerManager">
+		insert into spm_timer_manager
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="belongsSystem != null">
+				belongsSystem,
+			</if>
+			<if test="packagePath != null">
+				packagePath,
+			</if>
+			<if test="cron != null">
+				cron,
+			</if>
+			<if test="execStatus != null">
+				execStatus,
+			</if>
+			<if test="lastTime != null">
+				lastTime,
+			</if>
+			<if test="lastResult != null">
+				lastResult,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="belongsSystem != null">
+				#{belongsSystem,jdbcType=VARCHAR},
+			</if>
+			<if test="packagePath != null">
+				#{packagePath,jdbcType=VARCHAR},
+			</if>
+			<if test="cron != null">
+				#{cron,jdbcType=VARCHAR},
+			</if>
+			<if test="execStatus != null">
+				#{execStatus,jdbcType=INTEGER},
+			</if>
+			<if test="lastTime != null">
+				#{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastResult != null">
+				#{lastResult,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.jianq.manager.spm.timer.entity.TimerManager">
+		update spm_timer_manager
+		<set>
+			<if test="name != null and name !=''">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="belongsSystem != null">
+				belongsSystem = #{belongsSystem,jdbcType=VARCHAR},
+			</if>
+			<if test="packagePath != null">
+				packagePath = #{packagePath,jdbcType=VARCHAR},
+			</if>
+			<if test="cron != null  and cron !=''">
+				cron = #{cron,jdbcType=VARCHAR},
+			</if>
+			<if test="execStatus != null">
+				execStatus = #{execStatus,jdbcType=INTEGER},
+			</if>
+			<if test="lastTime != null">
+				lastTime = #{lastTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastResult != null">
+				lastResult = #{lastResult,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.jianq.manager.spm.timer.entity.TimerManager">
+		update spm_timer_manager
+		set name = #{name,jdbcType=VARCHAR},
+		belongsSystem = #{belongsSystem,jdbcType=VARCHAR},
+		packagePath = #{packagePath,jdbcType=VARCHAR},
+		cron = #{cron,jdbcType=VARCHAR},
+		execStatus = #{execStatus,jdbcType=INTEGER},
+		lastTime = #{lastTime,jdbcType=TIMESTAMP},
+		lastResult = #{lastResult,jdbcType=VARCHAR},
+		createTime = #{createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="list" parameterType="string" resultType="com.jianq.manager.spm.timer.entity.TimerManager">
+		select
+		<include refid="Base_Column_List" />
+		from spm_timer_manager
+		<where>
+			<if test="name != null and name !=''">
+				name like '%${name}%'
+			</if>
+		</where>
+	</select>
+</mapper>

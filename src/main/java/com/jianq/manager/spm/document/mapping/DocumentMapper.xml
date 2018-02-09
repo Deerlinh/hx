@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianq.manager.spm.document.dao.DocumentDao">
+    <resultMap id="BaseResultMap" type="com.jianq.manager.spm.document.entity.Document">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="uuidname" property="uuidname" jdbcType="VARCHAR"/>
+        <result column="size" property="size" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="fid" property="fid" jdbcType="INTEGER"/>
+        <result column="suffix" property="suffix" jdbcType="VARCHAR"/>
+        <result column="contexttype" property="contexttype" jdbcType="VARCHAR"/>
+        <result column="creater" property="creater" jdbcType="INTEGER"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, uuidname, size, level, type, fid, suffix, contexttype, creater, createtime
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from go_document
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from go_document
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.jianq.manager.spm.document.entity.Document" useGeneratedKeys="true" keyProperty="id">
+        insert into go_document
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="uuidname != null">
+                uuidname,
+            </if>
+            <if test="size != null">
+                size,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="fid != null">
+                fid,
+            </if>
+            <if test="suffix != null">
+                suffix,
+            </if>
+            <if test="contexttype != null">
+                contexttype,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="uuidname != null">
+                #{uuidname,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                #{size,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null">
+                #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="suffix != null">
+                #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="contexttype != null">
+                #{contexttype,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jianq.manager.spm.document.entity.Document">
+        update go_document
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="uuidname != null">
+                uuidname = #{uuidname,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                size = #{size,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="fid != null">
+                fid = #{fid,jdbcType=INTEGER},
+            </if>
+            <if test="suffix != null">
+                suffix = #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="contexttype != null">
+                contexttype = #{contexttype,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                creater = #{creater,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <sql id="Query_Column_List">
+        <if test="creater != null">
+            AND gd.creater = #{creater}
+        </if>
+        <if test="level != null">
+            AND gd.level = #{level}
+        </if>
+        <if test="type != null">
+            AND gd.type = #{type}
+        </if>
+        <if test="fid != null">
+            AND gd.fid = #{fid}
+        </if>
+        <if test="name != null and name !=''">
+            AND gd.name like CONCAT("%",#{name},"%")
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List_Blob1">
+        gd.id, gd.name, gd.uuidname, gd.size, gd.level, gd.type, gd.fid, gd.suffix, gd.contexttype, gd.creater, gd.createtime,su.userName creatorName
+    </sql>
+    <sql id="Base_Column_List_Blob2">
+        gd.id, gd.name, gd.uuidname, gd.size, gd.level, gd.type, gd.fid, gd.suffix, gd.contexttype, gd.creater, gds.createtime,su.userName creatorName
+    </sql>
+
+    <select id="listOwnDocument" resultMap="BaseResultMap" parameterType="com.jianq.manager.spm.document.entity.Document">
+        select
+        <include refid="Base_Column_List_Blob1"/>
+        from go_document gd
+        LEFT JOIN spm_user su ON gd.creater = su.userId
+        where 1 = 1
+        <include refid="Query_Column_List"/>
+        ORDER BY gd.createtime DESC
+    </select>
+
+    <select id="listShareDocument" resultMap="BaseResultMap" parameterType="com.jianq.manager.spm.document.entity.Document">
+        select <include refid="Base_Column_List_Blob2"/>
+        from go_document gd
+        LEFT JOIN spm_user su ON gd.creater = su.userId
+        where 1 = 1
+        <include refid="Query_Column_List"/>
+        ORDER BY gds.createtime DESC
+    </select>
+
+    <select id="listByFid" resultMap="BaseResultMap" parameterType="int">
+        select
+        <include refid="Base_Column_List_Blob1"/>
+        from go_document gd LEFT JOIN spm_user su ON gd.creater = su.userId
+        where gd.fid = #{fid}
+        ORDER BY gd.createtime DESC
+    </select>
+</mapper>

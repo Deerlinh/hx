@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jianq.manager.spm.order.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.jianq.manager.spm.order.entity.Order">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="payee" property="payee" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="amount" property="amount" jdbcType="DOUBLE"/>
+        <result column="picUrl" property="picUrl" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="INTEGER"/>
+        <result column="cargoId" property="cargoId" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ho.id, ho.name, ho.payee,ho.remark, ho.amount, ho.picUrl, ho.status, ho.creator, ho.cargoId, ho.createTime,hx.userName creatorName
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_order ho
+        LEFT JOIN hx_user hx ON ho.creator = hx.userId
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hx_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.jianq.manager.spm.order.entity.Order" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into hx_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="payee != null">
+                payee,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="picUrl != null">
+                picUrl,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="cargoId != null">
+                cargoId,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="payee != null">
+                #{payee,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DOUBLE},
+            </if>
+            <if test="picUrl != null">
+                #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="cargoId != null">
+                #{cargoId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.jianq.manager.spm.order.entity.Order">
+        update hx_order
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="payee != null">
+                payee = #{payee,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DOUBLE},
+            </if>
+            <if test="picUrl != null">
+                picUrl = #{picUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="cargoId != null">
+                cargoId = #{cargoId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <sql id="Query_Column_List">
+        <if test="creator != null">
+            AND ho.creator = #{creator}
+        </if>
+        <if test="cargoId != null">
+            AND ho.cargoId = #{cargoId}
+        </if>
+        <if test="status != null">
+            AND ho.status = #{status}
+        </if>
+        <if test="payee != null and payee !=''">
+            AND ho.payee like CONCAT("%",#{payee},"%")
+        </if>
+        <if test="name != null and name !=''">
+            AND ho.name like CONCAT("%",#{name},"%")
+        </if>
+    </sql>
+
+    <select id="listOrder" resultMap="BaseResultMap" parameterType="com.jianq.manager.spm.order.vo.OrderVO">
+        select
+        <include refid="Base_Column_List"/>
+        from hx_order ho
+        LEFT JOIN hx_user hx ON ho.creator = hx.userId
+        where 1 = 1
+        <include refid="Query_Column_List"/>
+        order by ho.id desc
+        <if test="startNum!=null and orderPageSize!=null">
+            limit #{startNum} , #{orderPageSize}
+        </if>
+    </select>
+
+    <select id="countOrder" resultType="integer" parameterType="com.jianq.manager.spm.order.vo.OrderVO">
+        select COUNT(*)
+        from hx_order ho
+        where 1 = 1
+        <include refid="Query_Column_List"/>
+    </select>
+
+</mapper>
